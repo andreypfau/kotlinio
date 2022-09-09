@@ -9,7 +9,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
     override val header: IPv4Header
     override val payload: Packet?
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = IPv4Header(rawData, offset, length)
         val remainingRawDataLength = length - header.length
         val totalLength = header.totalLength.toUShort().toInt()

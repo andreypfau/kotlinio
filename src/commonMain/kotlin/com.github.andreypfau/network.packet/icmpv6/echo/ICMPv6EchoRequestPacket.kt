@@ -8,7 +8,7 @@ class ICMPv6EchoRequestPacket : IcmpIdentifiablePacket {
     override val header: ICMPv6EchoRequestHeader
     override val payload: Packet?
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = ICMPv6EchoRequestHeader(rawData, offset, length)
         val payloadLength = length - header.length
         payload = if (payloadLength > 0) {

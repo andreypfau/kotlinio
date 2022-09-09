@@ -10,7 +10,7 @@ class EthernetHeader : AbstractPacket.AbstractHeader {
     val srcAddress: MacAddress
     val type: EtherType
 
-    constructor(rawData: ByteArray, offset: Int, length: Int) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         require(length >= ETHERNET_HEADER_SIZE)
         dstAddress = MacAddress(rawData, DST_ADDR_OFFSET + offset)
         srcAddress = MacAddress(rawData, SRC_ADDR_OFFSET + offset)

@@ -9,7 +9,7 @@ class UdpPacket : AbstractPacket, TransportPacket {
     override val header: UdpHeader
     override val payload: Packet?
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = UdpHeader(rawData, offset, length)
         var payloadLength = header.packetLength.toInt() - header.length
         if (payloadLength < 0) {

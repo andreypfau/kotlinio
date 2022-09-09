@@ -8,7 +8,7 @@ abstract class IcmpIdentifiableHeader : AbstractPacket.AbstractHeader {
     val identifier: UShort
     val sequenceNumber: UShort
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         require(length >= ICMP_IDENTIFIABLE_HEADER_SIZE)
         identifier = rawData.getUShort(IDENTIFIER_OFFSET + offset)
         sequenceNumber = rawData.getUShort(SEQUENCE_NUMBER_OFFSET + offset)

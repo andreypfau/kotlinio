@@ -4,7 +4,7 @@ import kotlin.experimental.and
 
 class MacAddress(
     private val data: ByteArray,
-    private val offset: Int,
+    private val offset: Int = 0,
 ) : LinkLayerAddress() {
     constructor(data: ByteArray) : this(data.copyOf(SIZE_BYTES), 0)
 

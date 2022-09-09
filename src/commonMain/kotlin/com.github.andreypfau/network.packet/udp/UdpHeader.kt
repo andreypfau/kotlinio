@@ -60,7 +60,7 @@ class UdpHeader : AbstractPacket.AbstractHeader, TransportHeader {
     val checksum: UShort
     override val length: Int = UDP_HEADER_SIZE
 
-    constructor(rawData: ByteArray, offset: Int, length: Int) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         require(length >= UDP_HEADER_SIZE)
         srcPort = rawData.getUShort(SRC_PORT_OFFSET + offset)
         dstPort = rawData.getUShort(DST_PORT_OFFSET + offset)

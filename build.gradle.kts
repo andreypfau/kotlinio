@@ -21,24 +21,64 @@ kotlin {
         }
     }
     val hostOs = System.getProperty("os.name")
-    val isMingwX64 = hostOs.startsWith("Windows")
-    val nativeTarget = when {
-        hostOs == "Mac OS X" -> macosX64("native")
-        hostOs == "Linux" -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
+    val allTarget = true
+    val isMingw = hostOs.startsWith("Windows")
+    val isLinux = hostOs.startsWith("Linux")
+    val isMacos = hostOs.startsWith("Mac OS")
 
     sourceSets {
-        val commonMain by getting
-        val commonTest by getting {
+        val commonMain by getting {
             dependencies {
-                implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
         }
         val jvmMain by getting
-        val jvmTest by getting
-        val nativeMain by getting
-        val nativeTest by getting
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+
+        if (isMacos) {
+            macosX64()
+            macosArm64() {
+                binaries {
+                    executable()
+                }
+            }
+
+            val darwinMain by creating {
+                dependsOn(nativeMain)
+            }
+            val macosMain by creating {
+                dependsOn(darwinMain)
+            }
+            val macosX64Main by getting {
+                dependsOn(macosMain)
+            }
+            val macosArm64Main by getting {
+                dependsOn(macosMain)
+            }
+        }
+
+        if (isMingw || allTarget) {
+            mingwX64()
+
+            val mingwMain by creating {
+                dependsOn(nativeMain)
+            }
+            val mingwX64Main by getting {
+                dependsOn(mingwMain)
+            }
+        }
+
+        if (isLinux || allTarget) {
+            linuxX64()
+
+            val linuxMain by creating {
+                dependsOn(nativeMain)
+            }
+            val linuxX64Main by getting {
+                dependsOn(linuxMain)
+            }
+        }
     }
 }

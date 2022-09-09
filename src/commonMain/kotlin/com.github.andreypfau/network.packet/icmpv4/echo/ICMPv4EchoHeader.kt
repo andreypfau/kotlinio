@@ -6,7 +6,7 @@ class ICMPv4EchoHeader : IcmpIdentifiableHeader {
     constructor(
         rawData: ByteArray,
         offset: Int = 0,
-        length: Int = rawData.size
+        length: Int = rawData.size - offset
     ) : super(rawData, offset, length)
 
     constructor(builder: ICMPv4EchoBuilder) : super(builder)

@@ -23,7 +23,7 @@ class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
     override val protocol: IpProtocol
         get() = nextHeader
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         require(length >= IPV6_HEADER_SIZE)
         val versionAndTrafficClassAndFlowLabel =
             rawData.getUInt(VERSION_AND_TRAFFIC_CLASS_AND_FLOW_LABEL_OFFSET + offset)

@@ -9,7 +9,7 @@ class TcpPacket : AbstractPacket, TransportPacket {
     override val header: TcpHeader
     override val payload: Packet?
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = TcpHeader(rawData, offset, length)
         val payloadLength = length - header.length
         payload = if (payloadLength > 0) {

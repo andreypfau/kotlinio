@@ -14,22 +14,7 @@ class EthernetPacket : AbstractPacket {
     override val payload: Packet?
     val padding get() = _padding.copyOf()
 
-    constructor(builder: EthernetBuilder) {
-        payload = builder.payloadBuilder?.build()
-        header = EthernetHeader(builder)
-        val payloadLength = payload?.length ?: 0
-        _padding = if (builder.paddingAtBuild) {
-            if (payloadLength < MIN_ETHERNET_PAYLOAD_LENGTH) {
-                ByteArray(MIN_ETHERNET_PAYLOAD_LENGTH - payloadLength)
-            } else {
-                byteArrayOf()
-            }
-        } else {
-            requireNotNull(builder.padding) { "padding == null" }.copyOf()
-        }
-    }
-
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = EthernetHeader(rawData, offset, length)
         if ((header.type.value and 0xFFFFu).toInt() <= EtherType.IEEE802_3_MAX_LENGTH) {
             val payloadLength = header.type.value.toInt()
@@ -63,6 +48,21 @@ class EthernetPacket : AbstractPacket {
                 payload = null
                 _padding = byteArrayOf()
             }
+        }
+    }
+
+    constructor(builder: EthernetBuilder) {
+        payload = builder.payloadBuilder?.build()
+        header = EthernetHeader(builder)
+        val payloadLength = payload?.length ?: 0
+        _padding = if (builder.paddingAtBuild) {
+            if (payloadLength < MIN_ETHERNET_PAYLOAD_LENGTH) {
+                ByteArray(MIN_ETHERNET_PAYLOAD_LENGTH - payloadLength)
+            } else {
+                byteArrayOf()
+            }
+        } else {
+            requireNotNull(builder.padding) { "padding == null" }.copyOf()
         }
     }
 

@@ -29,7 +29,7 @@ class IPv4Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
     val options: List<IPv4Option>
     val padding: ByteArray
 
-    constructor(rawData: ByteArray, offset: Int, length: Int) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         val versionAndIhl = rawData[VERSION_AND_IHL_OFFSET + offset].toInt()
         version = IpVersion[((versionAndIhl and 0xF0) shr 4).toByte()]
         ihl = (versionAndIhl and 0x0F).toByte()

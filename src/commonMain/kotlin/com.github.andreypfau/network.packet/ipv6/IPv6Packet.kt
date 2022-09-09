@@ -8,7 +8,7 @@ class IPv6Packet : AbstractPacket, IpPacket {
     override val header: IPv6Header
     override val payload: Packet?
 
-    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = IPv6Header(rawData, offset, length)
         val remainingRawDataLength = length - header.length
         var payloadLength: Int

@@ -5,7 +5,7 @@ import kotlin.experimental.or
 
 class Inet6Address(
     private val data: ByteArray,
-    private val offset: Int
+    private val offset: Int = 0
 ) : InetAddress {
     constructor() : this(ByteArray(SIZE_BYTES), 0)
     constructor(data: ByteArray) : this(data.copyOf(SIZE_BYTES), 0)

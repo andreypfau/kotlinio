@@ -10,7 +10,7 @@ class ICMPv4CommonHeader : AbstractPacket.AbstractHeader {
     val code: ICMPv4Code
     val checksum: UShort
 
-    constructor(rawData: ByteArray, offset: Int, length: Int) {
+    constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         require(length >= ICMPV4_COMMON_HEADER_SIZE)
         type = ICMPv4Type[rawData[TYPE_OFFSET + offset]]
         code = type[rawData[CODE_OFFSET + offset]]
