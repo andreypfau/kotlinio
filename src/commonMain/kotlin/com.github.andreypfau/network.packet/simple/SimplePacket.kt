@@ -40,6 +40,8 @@ class SimplePacket(
     class Builder(
         var rawData: ByteArray = byteArrayOf()
     ) : AbstractBuilder() {
+        override var payloadBuilder: Packet.Builder? = null
+
         override fun build(): Packet = SimplePacket(rawData)
     }
 }

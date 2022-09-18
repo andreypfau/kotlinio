@@ -2,6 +2,15 @@ package com.github.andreypfau.network.packet.dns
 
 import com.github.andreypfau.network.utils.getUShort
 import com.github.andreypfau.network.utils.toByteArray
+import kotlin.jvm.JvmSynthetic
+
+@JvmSynthetic
+inline fun DnsQuestion(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): DnsQuestion =
+    DnsQuestion.newInstance(rawData, offset, length)
+
+@JvmSynthetic
+inline fun DnsQuestion(builder: DnsQuestion.Builder.() -> Unit): DnsQuestion =
+    DnsQuestion.Builder().apply(builder).build()
 
 interface DnsQuestion {
     val qName: DnsDomainName
@@ -27,15 +36,19 @@ interface DnsQuestion {
     }
 
     data class Builder(
-        val qName: DnsDomainName? = null,
-        val qType: DnsResourceRecordType? = null,
-        val qClass: DnsClass? = null,
+        var qName: DnsDomainName? = null,
+        var qType: DnsResourceRecordType? = null,
+        var qClass: DnsClass? = null,
     ) {
         fun build(): DnsQuestion = FieldBacked(
             requireNotNull(qName),
             requireNotNull(qType),
             requireNotNull(qClass),
         )
+
+        fun qName(builder: DnsDomainName.Builder.() -> Unit) = apply {
+            qName = DnsDomainName(builder)
+        }
     }
 
     private abstract class AbstractDnsQuestion : DnsQuestion {
@@ -43,6 +56,13 @@ interface DnsQuestion {
         abstract override val qType: DnsResourceRecordType
         abstract override val qClass: DnsClass
 
+        private val _string: String by lazy {
+            buildString {
+                append("QNAME: ").append(qName).appendLine()
+                append("QTYPE: ").append(qType).appendLine()
+                append("QCLASS: ").append(qClass).appendLine()
+            }
+        }
         private val _hashCode: Int by lazy {
             var result = qName.hashCode()
             result = 31 * result + qType.hashCode()
@@ -62,25 +82,26 @@ interface DnsQuestion {
         }
 
         override fun hashCode(): Int = _hashCode
+        override fun toString(): String = _string
     }
 
     private class ByteBacked(
-        private val rawData: ByteArray,
-        private val offset: Int,
-        private val rawDataLength: Int
+        private val _rawData: ByteArray,
+        private val _offset: Int,
+        private val _length: Int
     ) : AbstractDnsQuestion() {
         override val qName: DnsDomainName by lazy {
-            DnsDomainName.newInstance(rawData, offset, rawDataLength)
+            DnsDomainName.newInstance(_rawData, _offset, _length)
         }
         override val qType: DnsResourceRecordType by lazy {
-            DnsResourceRecordType[rawData.getUShort(offset + qName.length)]
+            DnsResourceRecordType[_rawData.getUShort(_offset + qName.length)]
         }
         override val qClass: DnsClass by lazy {
-            DnsClass[rawData.getUShort(qName.length + Short.SIZE_BYTES)]
+            DnsClass[_rawData.getUShort(_offset + qName.length + Short.SIZE_BYTES)]
         }
 
         override fun toByteArray(buf: ByteArray, offset: Int): ByteArray {
-            return rawData.copyInto(buf, offset, 0, rawDataLength)
+            return _rawData.copyInto(buf, offset, 0, _length)
         }
     }
 

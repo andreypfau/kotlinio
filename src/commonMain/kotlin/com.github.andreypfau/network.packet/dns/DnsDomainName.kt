@@ -4,10 +4,13 @@ import com.github.andreypfau.network.utils.getUShort
 import com.github.andreypfau.network.utils.toByteArray
 import kotlin.experimental.or
 import kotlin.jvm.JvmStatic
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 inline fun DnsDomainName(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): DnsDomainName =
     DnsDomainName.newInstance(rawData, offset, length)
 
+@JvmSynthetic
 inline fun DnsDomainName(builder: DnsDomainName.Builder.() -> Unit): DnsDomainName =
     DnsDomainName.Builder().apply(builder).build()
 
@@ -21,22 +24,7 @@ interface DnsDomainName {
 
     fun toByteArray() = toByteArray(ByteArray(length))
 
-    fun toByteArray(buf: ByteArray, offset: Int = 0): ByteArray {
-        var cursor = 0
-        labels.forEach { label ->
-            val labelBytes = label.encodeToByteArray()
-            buf[offset + cursor] = labelBytes.size.toByte()
-            cursor++
-            labelBytes.copyInto(buf, offset + cursor)
-            cursor += labelBytes.size
-        }
-        val pointer = pointer
-        if (pointer != null) {
-            pointer.toByteArray(buf, offset + cursor)
-            buf[offset + cursor] = buf[offset + cursor] or 0xC0.toByte()
-        }
-        return buf
-    }
+    fun toByteArray(buf: ByteArray, offset: Int = 0): ByteArray
 
     companion object {
         @JvmStatic
@@ -72,6 +60,7 @@ interface DnsDomainName {
             var foundPointer: UShort? = null
             var terminated = false
             val labels = ArrayList<String>()
+
             while (cursor < length) {
                 val len = rawData[offset + cursor].toUByte().toInt()
                 val flag = len and 0xC0
@@ -82,7 +71,7 @@ interface DnsDomainName {
                     }
 
                     cursor++
-                    require(len - cursor >= len) { "The data is too short to build a DnsDomainName" }
+                    require(length - cursor >= len) { "The data is too short to build a DnsDomainName" }
                     val labelOffset = offset + cursor
                     labels.add(rawData.decodeToString(labelOffset, labelOffset + len))
                     cursor += len
@@ -95,18 +84,57 @@ interface DnsDomainName {
                     throw IllegalArgumentException("A label must start with 00 or 11")
                 }
             }
+
             if (!terminated) {
                 throw IllegalArgumentException("No null termination nor pointer")
             }
             this.labels = labels
             this.pointer = foundPointer
         }
+
+        override fun toByteArray(buf: ByteArray, offset: Int): ByteArray {
+            var cursor = offset
+            labels.forEach { label ->
+                val labelBytes = label.encodeToByteArray()
+                buf[cursor] = labelBytes.size.toByte()
+                cursor++
+                labelBytes.copyInto(buf, cursor)
+                cursor += labelBytes.size
+            }
+            val pointer = pointer
+            if (pointer != null) {
+                val offsetBytes = pointer.toByteArray()
+                offsetBytes[0] = (offsetBytes[0].toInt() or 0xC0).toByte()
+                offsetBytes.copyInto(buf, cursor)
+            }
+            return buf
+        }
     }
 
     private class FieldBacked(
         override val labels: List<String>,
         override val pointer: UShort?
-    ) : AbstractDnsDomainName()
+    ) : AbstractDnsDomainName() {
+        override fun toByteArray(buf: ByteArray, offset: Int): ByteArray {
+            var cursor = 0
+            labels.forEach { label ->
+                val labelBytes = label.encodeToByteArray()
+                buf[offset + cursor] = labelBytes.size.toByte()
+                cursor++
+                labelBytes.copyInto(buf, offset + cursor)
+                cursor += labelBytes.size
+            }
+            val pointer = pointer
+            if (pointer != null) {
+
+                pointer.toByteArray(buf, offset + cursor)
+
+                buf[offset + cursor] = buf[offset + cursor] or 0xC0.toByte()
+
+            }
+            return buf
+        }
+    }
 
     private abstract class AbstractDnsDomainName : DnsDomainName {
         abstract override val pointer: UShort?

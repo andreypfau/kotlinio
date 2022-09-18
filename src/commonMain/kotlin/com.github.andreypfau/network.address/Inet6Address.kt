@@ -101,7 +101,7 @@ class Inet6Address(
     override fun toByteArray(): ByteArray = toByteArray(ByteArray(SIZE_BYTES))
 
     override fun toByteArray(destination: ByteArray, offset: Int): ByteArray =
-        data.copyInto(destination, offset, 0, offset + size)
+        data.copyInto(destination, offset, this.offset, this.offset + size)
 
     override fun toString(): String = _string
 

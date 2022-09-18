@@ -100,10 +100,7 @@ abstract class AbstractPacket : Packet {
     abstract class AbstractBuilder : Packet.Builder {
         override fun iterator(): Iterator<Packet.Builder> = BuilderIterator(this)
 
-
-        override var payloadBuilder: Packet.Builder?
-            get() = null
-            set(_) = throw UnsupportedOperationException()
+        abstract override var payloadBuilder: Packet.Builder?
 
         override fun <T : Packet.Builder> get(clazz: KClass<T>): T? {
             forEach { builder ->

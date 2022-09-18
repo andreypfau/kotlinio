@@ -26,5 +26,8 @@ interface Packet : Iterable<Packet> {
     interface Header {
         val length: Int
         val rawData: ByteArray
+
+        fun toByteArray(): ByteArray = toByteArray(ByteArray(length))
+        fun toByteArray(destination: ByteArray, offset: Int = 0): ByteArray = rawData.copyInto(destination, offset)
     }
 }

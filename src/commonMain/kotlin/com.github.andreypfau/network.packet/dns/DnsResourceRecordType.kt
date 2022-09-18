@@ -1,22 +1,22 @@
 package com.github.andreypfau.network.packet.dns
 
-import com.github.andreypfau.network.packet.dns.rdata.DnsRDataA
+import com.github.andreypfau.network.packet.dns.rdata.*
 import kotlin.jvm.JvmStatic
 
 enum class DnsResourceRecordType(
     val value: UShort,
-    val payloadFactory: (ByteArray, Int, Int) -> DnsRDataA = { _, _, _ -> TODO() }
+    private val payloadFactory: (ByteArray, Int, Int) -> DnsRData = ::DnsRDataNull
 ) {
     A(1u, ::DnsRDataA),
     NS(2u),
     MD(3u),
     MF(4u),
-    CNAME(5u),
+    CNAME(5u, ::DnsRDataCName),
     SOA(6u),
     MB(7u),
     MG(8u),
     MR(9u),
-    NULL(10u),
+    NULL(10u, ::DnsRDataNull),
     WKS(11u),
     PTR(12u),
     HINFO(13u),
@@ -34,7 +34,7 @@ enum class DnsResourceRecordType(
     KEY(25u),
     PX(26u),
     GPOS(27u),
-    AAAA(28u),
+    AAAA(28u, ::DnsRDataAAAA),
     LOC(29u),
     NXT(30u),
     EID(31u),
@@ -92,6 +92,13 @@ enum class DnsResourceRecordType(
     TA(32768u),
     DLV(32769u),
     ;
+
+    fun getInstance(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): DnsRData =
+        try {
+            payloadFactory(rawData, offset, length)
+        } catch (e: Exception) {
+            DnsRDataNull(rawData, offset, length)
+        }
 
     companion object {
         private val registry = values().associateBy { it.value }

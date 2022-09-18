@@ -2,10 +2,13 @@ package com.github.andreypfau.network.packet.dns.rdata
 
 import com.github.andreypfau.network.address.Inet4Address
 import kotlin.jvm.JvmStatic
+import kotlin.jvm.JvmSynthetic
 
+@JvmSynthetic
 inline fun DnsRDataA(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): DnsRDataA =
     DnsRDataA.newInstance(rawData, offset, length)
 
+@JvmSynthetic
 inline fun DnsRDataA(address: Inet4Address): DnsRDataA = DnsRDataA.newInstance(address)
 
 interface DnsRDataA : DnsRData {
@@ -30,7 +33,7 @@ interface DnsRDataA : DnsRData {
             }
         }
 
-        override fun getByteArray(buf: ByteArray, offset: Int): ByteArray {
+        override fun toByteArray(buf: ByteArray, offset: Int): ByteArray {
             address.toByteArray(buf, offset)
             return buf
         }
