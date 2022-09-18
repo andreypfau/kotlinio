@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.7.20-Beta"
+    kotlin("multiplatform") version "1.7.20-RC"
     `maven-publish`
 }
 
@@ -21,7 +21,7 @@ kotlin {
         }
     }
     val hostOs = System.getProperty("os.name")
-    val allTarget = true
+    val allTarget = false
     val isMingw = hostOs.startsWith("Windows")
     val isLinux = hostOs.startsWith("Linux")
     val isMacos = hostOs.startsWith("Mac OS")
