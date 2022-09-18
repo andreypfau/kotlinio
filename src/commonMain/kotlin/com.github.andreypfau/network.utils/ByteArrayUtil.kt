@@ -29,6 +29,9 @@ internal fun Short.toByteArray() =
 internal fun UShort.toByteArray() =
     toShort().toByteArray(ByteArray(Short.SIZE_BYTES))
 
+internal fun UShort.toByteArray(destination: ByteArray, destinationOffset: Int = 0) =
+    toShort().toByteArray(destination, destinationOffset)
+
 internal fun Short.toByteArray(destination: ByteArray, destinationOffset: Int = 0): ByteArray {
     destination[destinationOffset] = shr(Byte.SIZE_BITS).toByte()
     destination[destinationOffset + 1] = toByte()

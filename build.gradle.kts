@@ -72,6 +72,7 @@ kotlin {
 
         if (isLinux || allTarget) {
             linuxX64()
+//            linuxArm64()
 
             val linuxMain by creating {
                 dependsOn(nativeMain)
@@ -79,6 +80,9 @@ kotlin {
             val linuxX64Main by getting {
                 dependsOn(linuxMain)
             }
+//            val linuxArm64Main by getting {
+//                dependsOn(linuxMain)
+//            }
         }
     }
 }

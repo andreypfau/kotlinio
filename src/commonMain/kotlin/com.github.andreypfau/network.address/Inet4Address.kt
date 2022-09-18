@@ -10,6 +10,18 @@ class Inet4Address(
                 ((data[offset].toInt() and 0xFF) shl 24)
     )
 
+    constructor(string: String) : this(
+        string.split('.', limit = 4).let { stringOctets ->
+            require(stringOctets.size == SIZE_BYTES) { "Invalid address: $string" }
+            byteArrayOf(
+                stringOctets[0].toByte(),
+                stringOctets[1].toByte(),
+                stringOctets[2].toByte(),
+                stringOctets[3].toByte(),
+            )
+        }
+    )
+
     private val _string by lazy {
         toString(toByteArray())
     }
