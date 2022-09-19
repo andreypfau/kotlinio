@@ -46,15 +46,12 @@ kotlin {
         }
         val nativeMain by creating {
             dependsOn(commonMain)
+//
         }
 
         if (isMacos) {
             macosX64()
-            macosArm64() {
-                binaries {
-                    executable()
-                }
-            }
+            macosArm64()
 
             val darwinMain by creating {
                 dependsOn(nativeMain)
@@ -94,6 +91,18 @@ kotlin {
 //            val linuxArm64Main by getting {
 //                dependsOn(linuxMain)
 //            }
+        }
+
+        targets.filterIsInstance(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).forEach {
+            it.compilations {
+                getByName("main") {
+                    cinterops {
+                        val bits by creating {
+                            defFile(file("src/nativeMain/interop/bits.def"))
+                        }
+                    }
+                }
+            }
         }
     }
 }
