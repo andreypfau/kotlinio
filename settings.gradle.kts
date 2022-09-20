@@ -1,2 +1,1 @@
-rootProject.name = "kotlin-network"
-
+rootProject.name = "kotlin-io"
