@@ -28,7 +28,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
             }
         }
         payload = if (payloadLength != 0) {
-            if (header.moreFragmentFlag || header.fragmentOffset.toUShort().toInt() != 0) {
+            if (header.isFragmented) {
                 SimplePacket(rawData, header.length + offset, payloadLength)
             } else {
                 header.protocol.packet(rawData, header.length + offset, payloadLength)
