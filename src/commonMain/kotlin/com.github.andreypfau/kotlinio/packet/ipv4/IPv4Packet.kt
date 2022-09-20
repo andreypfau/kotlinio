@@ -72,9 +72,6 @@ class IPv4Packet : AbstractPacket, IpPacket {
 
     companion object {
         @JvmStatic
-        fun builder() = IPv4Builder()
-
-        @JvmStatic
         fun build(builder: IPv4Builder.() -> Unit): IPv4Packet =
             IPv4Builder().apply(builder).build()
 
@@ -134,7 +131,14 @@ class IPv4Packet : AbstractPacket, IpPacket {
         }
 
         @JvmStatic
+        fun defragment(vararg packets: IPv4Packet): IPv4Packet {
+            if (packets.size == 1) return packets.first()
+            return defragment(packets.toList())
+        }
+
+        @JvmStatic
         fun defragment(packets: Collection<IPv4Packet>): IPv4Packet {
+            if (packets.size == 1) return packets.first()
             val sorted = packets.sortedBy { it.header.fragmentOffset }
             val lastPacketHeader = sorted.last().header
             val payloadLength = lastPacketHeader.fragmentOffset * 8 +
