@@ -34,6 +34,7 @@ class IPv4Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
     constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         val versionAndIhl = rawData[VERSION_AND_IHL_OFFSET + offset].toInt()
         version = IpVersion[((versionAndIhl and 0xF0) shr 4).toByte()]
+        require(version == IpVersion.IPv4)
         ihl = (versionAndIhl and 0x0F).toByte()
         tos = IPv4Rfc1349Tos(rawData[TOS_OFFSET + offset])
         totalLength = rawData.getUShortAt(TOTAL_LENGTH_OFFSET + offset)
@@ -185,6 +186,8 @@ class IPv4Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
         if (padding.isNotEmpty()) {
             append("  Padding: 0x").append(padding.hex(" ")).appendLine()
         }
+        append("  Src Address: ").append(srcAddress).appendLine()
+        append("  Dst Address: ").append(dstAddress).appendLine()
     }
 
     override fun equals(other: Any?): Boolean {

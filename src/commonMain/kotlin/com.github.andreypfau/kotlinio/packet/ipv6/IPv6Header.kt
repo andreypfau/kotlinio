@@ -28,6 +28,7 @@ class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
         val versionAndTrafficClassAndFlowLabel =
             rawData.getUIntAt(VERSION_AND_TRAFFIC_CLASS_AND_FLOW_LABEL_OFFSET + offset)
         version = IpVersion[(versionAndTrafficClassAndFlowLabel ushr 28).toByte()]
+        require(version == IpVersion.IPv6)
         trafficClass = (versionAndTrafficClassAndFlowLabel shr 20).toUByte()
         flowLabel = rawData.getUIntAt(VERSION_AND_TRAFFIC_CLASS_AND_FLOW_LABEL_OFFSET + offset)
         payloadLength = rawData.getUShortAt(PAYLOAD_LENGTH_OFFSET + offset)

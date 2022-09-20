@@ -1,11 +1,11 @@
-package com.github.andreypfau.network.socket
+package com.github.andreypfau.kotlinio.socket
 
-import com.github.andreypfau.network.address.InetAddress
-import com.github.andreypfau.network.address.InetSocketAddress
-import com.github.andreypfau.network.packet.ip.IpVersion
-import com.github.andreypfau.network.utils.check
-import com.github.andreypfau.network.utils.inetSocketAddress
-import com.github.andreypfau.network.utils.sockaddr
+import com.github.andreypfau.kotlinio.address.InetAddress
+import com.github.andreypfau.kotlinio.address.InetSocketAddress
+import com.github.andreypfau.kotlinio.packet.ip.IpVersion
+import com.github.andreypfau.kotlinio.utils.check
+import com.github.andreypfau.kotlinio.utils.inetSocketAddress
+import com.github.andreypfau.kotlinio.utils.sockaddr
 import kotlinx.cinterop.*
 import platform.posix.*
 

@@ -12,7 +12,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
     constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
         header = IPv4Header(rawData, offset, length)
         val remainingRawDataLength = length - header.length
-        val totalLength = header.totalLength.toUShort().toInt()
+        val totalLength = header.totalLength.toInt()
         var payloadLength: Int
         if (totalLength == 0) {
             payloadLength = remainingRawDataLength
@@ -27,7 +27,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
         }
         payload = if (payloadLength != 0) {
             if (header.moreFragmentFlag || header.fragmentOffset.toUShort().toInt() != 0) {
-                TODO()
+                TODO("$header")
             } else {
                 header.protocol.packet(rawData, header.length + offset, payloadLength)
             }
