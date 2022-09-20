@@ -9,11 +9,12 @@ import com.github.andreypfau.kotlinio.utils.NamedValue
 class IpProtocol private constructor(
     override val value: Byte,
     override val name: String,
-    val factory: (ByteArray, Int, Int) -> Packet = ::SimplePacket
+    private val factory: (ByteArray, Int, Int) -> Packet = ::SimplePacket
 ) : NamedValue<Byte, IpProtocol>() {
     override fun compareTo(other: IpProtocol): Int = value.compareTo(other.value)
 
-    fun packet(rawData: ByteArray, offset: Int, length: Int) = factory(rawData, offset, length)
+    fun packet(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) =
+        factory(rawData, offset, length)
 
     companion object {
         private val registry = HashMap<Byte, IpProtocol>()

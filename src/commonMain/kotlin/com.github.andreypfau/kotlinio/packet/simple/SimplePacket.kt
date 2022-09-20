@@ -21,7 +21,7 @@ class SimplePacket(
             .appendLine()
     }
 
-    override fun builder() = Builder(rawData)
+    override fun builder() = Builder(rawData.copyOf())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

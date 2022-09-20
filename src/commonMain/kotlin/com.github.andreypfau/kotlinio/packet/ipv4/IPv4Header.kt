@@ -186,8 +186,6 @@ class IPv4Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
         if (padding.isNotEmpty()) {
             append("  Padding: 0x").append(padding.hex(" ")).appendLine()
         }
-        append("  Src Address: ").append(srcAddress).appendLine()
-        append("  Dst Address: ").append(dstAddress).appendLine()
     }
 
     override fun equals(other: Any?): Boolean {
