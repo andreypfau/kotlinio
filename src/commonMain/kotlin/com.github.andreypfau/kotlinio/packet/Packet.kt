@@ -12,6 +12,12 @@ interface Packet : Iterable<Packet> {
     fun getOuterOf(clazz: KClass<out Packet>): Packet?
     operator fun <T : Packet> contains(clazz: KClass<T>): Boolean
 
+    fun toByteArray(): ByteArray =
+        toByteArray(ByteArray(length))
+
+    fun toByteArray(destination: ByteArray, offset: Int = 0): ByteArray =
+        rawData.copyInto(destination, offset)
+
     fun builder(): Builder
 
     interface Builder : Iterable<Builder> {
@@ -25,6 +31,8 @@ interface Packet : Iterable<Packet> {
 
     interface Header {
         val length: Int
+
+        @Deprecated(message = "Deprecated", replaceWith = ReplaceWith("toByteArray()"))
         val rawData: ByteArray
 
         fun toByteArray(): ByteArray = toByteArray(ByteArray(length))

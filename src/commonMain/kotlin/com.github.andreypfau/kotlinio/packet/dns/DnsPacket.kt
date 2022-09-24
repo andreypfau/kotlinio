@@ -18,8 +18,6 @@ interface DnsPacket : Packet {
     override val payload: Packet?
 
     override fun builder(): Builder
-    fun toByteArray(): ByteArray = toByteArray(ByteArray(length))
-    fun toByteArray(destination: ByteArray, offset: Int = 0): ByteArray
 
     companion object {
         @JvmStatic

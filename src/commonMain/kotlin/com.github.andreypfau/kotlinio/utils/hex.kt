@@ -46,3 +46,16 @@ inline fun String.decodeHex(): ByteArray = hex(this)
 
 @Suppress("NOTHING_TO_INLINE")
 inline fun ByteArray.encodeHex(): String = hex(this)
+
+
+fun UByte.hex(): String = toString(16).padStart(Byte.SIZE_BYTES * 2, '0')
+fun Byte.hex(): String = toUByte().hex()
+
+fun UShort.hex(): String = toString(16).padStart(Short.SIZE_BYTES * 2, '0')
+fun Short.hex(): String = toUShort().hex()
+
+fun UInt.hex(): String = toString(16).padStart(Int.SIZE_BYTES * 2, '0')
+fun Int.hex(): String = toUInt().hex()
+
+fun ULong.hex(): String = toString(16).padStart(Long.SIZE_BYTES * 2, '0')
+fun Long.hex(): String = toULong().hex()

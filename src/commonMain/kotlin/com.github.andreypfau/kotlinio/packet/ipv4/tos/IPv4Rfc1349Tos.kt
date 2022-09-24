@@ -1,6 +1,5 @@
 package com.github.andreypfau.kotlinio.packet.ipv4.tos
 
-import com.github.andreypfau.kotlinio.packet.ipv4.IPv4Tos
 import com.github.andreypfau.kotlinio.utils.shl
 import com.github.andreypfau.kotlinio.utils.shr
 import kotlin.experimental.and

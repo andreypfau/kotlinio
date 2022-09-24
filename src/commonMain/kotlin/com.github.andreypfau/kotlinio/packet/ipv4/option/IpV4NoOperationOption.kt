@@ -1,7 +1,5 @@
 package com.github.andreypfau.kotlinio.packet.ipv4.option
 
-import com.github.andreypfau.kotlinio.packet.ipv4.IPv4Option
-
 object IpV4NoOperationOption : IPv4Option {
     override val type: IPv4OptionType get() = IPv4OptionType.NO_OPERATION
     override val length: Int get() = 1

@@ -1,6 +1,5 @@
 package com.github.andreypfau.kotlinio.packet.ipv4.option
 
-import com.github.andreypfau.kotlinio.packet.ipv4.IPv4Option
 import com.github.andreypfau.kotlinio.utils.NamedValue
 
 class IPv4OptionType private constructor(

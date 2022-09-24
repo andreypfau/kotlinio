@@ -21,3 +21,47 @@ fun ByteArray.setUIntAt(index: Int, value: UInt) = setIntAt(index, value.toInt()
 fun ByteArray.setULongAt(index: Int, value: ULong) = setLongAt(index, value.toLong())
 
 fun Boolean.toInt(): Int = if (this) 1 else 0
+operator fun ByteArray.set(index: Int, value: UByte) = set(index, value.toByte())
+
+@Suppress("NOTING_TO_INLINE")
+private inline fun bitMask(index: Int) = (1 shl (7 - (index % Byte.SIZE_BITS)))
+
+fun Byte.setBitAt(index: Int, value: Boolean): Byte {
+    val bitMask = bitMask(index)
+    return if (value) {
+        toInt() or bitMask
+    } else {
+        toInt() and bitMask.inv()
+    }.toByte()
+}
+
+fun UByte.setBitAt(index: Int, value: Boolean): UByte {
+    val bitMask = bitMask(index)
+    return if (value) {
+        toInt() or bitMask
+    } else {
+        toInt() and bitMask.inv()
+    }.toUByte()
+}
+
+fun Byte.getBitAt(index: Int, value: Boolean): Boolean {
+    val bitMask = bitMask(index)
+    return (toInt() and bitMask) != 0
+}
+
+fun UByte.getBitAt(index: Int, value: Boolean): Boolean {
+    val bitMask = bitMask(index)
+    return (toInt() and bitMask) != 0
+}
+
+fun UByte.binary(): String = toString(2).padStart(Byte.SIZE_BITS, '0')
+fun Byte.binary(): String = toUByte().binary()
+
+fun UShort.binary(): String = toString(2).padStart(Short.SIZE_BITS, '0')
+fun Short.binary(): String = toUShort().binary()
+
+fun UInt.binary(): String = toString(2).padStart(Int.SIZE_BITS, '0')
+fun Int.binary(): String = toUInt().binary()
+
+fun ULong.binary(): String = toString(2).padStart(Long.SIZE_BITS, '0')
+fun Long.binary(): String = toUInt().binary()
