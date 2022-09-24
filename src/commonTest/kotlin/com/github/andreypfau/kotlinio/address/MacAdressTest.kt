@@ -1,6 +1,5 @@
 package com.github.andreypfau.kotlinio.address
 
-import com.github.andreypfau.kotlinio.packet.ethernet.EthernetHeader
 import com.github.andreypfau.kotlinio.packet.ethernet.EthernetPacket
 import com.github.andreypfau.kotlinio.utils.hex
 import kotlin.test.Test

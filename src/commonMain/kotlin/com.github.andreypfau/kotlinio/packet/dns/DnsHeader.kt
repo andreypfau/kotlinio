@@ -54,55 +54,55 @@ interface DnsHeader : Packet.Header {
         private val _offset: Int,
         private val _length: Int
     ) : AbstractDnsHeader() {
-        override val id: UShort = run  {
+        override val id: UShort = run {
             _rawData.getUShortAt(ID_OFFSET + _offset)
         }
-        private val flags: Int = run  {
+        private val flags: Int = run {
             _rawData.getUShortAt(FLAGS_OFFSET + _offset).toInt()
         }
-        override val isResponse: Boolean = run  {
+        override val isResponse: Boolean = run {
             flags and 0x8000 != 0
         }
-        override val opCode: DnsOpCode = run  {
+        override val opCode: DnsOpCode = run {
             DnsOpCode[((flags shr 11) and 0x0F).toByte()]
         }
-        override val isAuthoritativeAnswer: Boolean = run  {
+        override val isAuthoritativeAnswer: Boolean = run {
             flags and 0x0400 != 0
         }
-        override val isTruncated: Boolean = run  {
+        override val isTruncated: Boolean = run {
             flags and 0x0200 != 0
         }
-        override val isRecursionDesired: Boolean = run  {
+        override val isRecursionDesired: Boolean = run {
             flags and 0x0100 != 0
         }
-        override val isRecursionAvailable: Boolean = run  {
+        override val isRecursionAvailable: Boolean = run {
             flags and 0x0080 != 0
         }
-        override val reservedBit: Boolean = run  {
+        override val reservedBit: Boolean = run {
             flags and 0x0040 != 0
         }
-        override val isAuthenticData: Boolean = run  {
+        override val isAuthenticData: Boolean = run {
             flags and 0x0020 != 0
         }
-        override val isCheckingDisabled: Boolean = run  {
+        override val isCheckingDisabled: Boolean = run {
             flags and 0x0010 != 0
         }
-        override val rCode: DnsRCode = run  {
+        override val rCode: DnsRCode = run {
             DnsRCode[(flags and 0x0F).toByte()]
         }
-        override val qdCount: UShort = run  {
+        override val qdCount: UShort = run {
             _rawData.getUShortAt(QDCOUNT_OFFSET + _offset)
         }
-        override val anCount: UShort = run  {
+        override val anCount: UShort = run {
             _rawData.getUShortAt(ANCOUNT_OFFSET + _offset)
         }
-        override val nsCount: UShort = run  {
+        override val nsCount: UShort = run {
             _rawData.getUShortAt(NSCOUNT_OFFSET + _offset)
         }
-        override val arCount: UShort = run  {
+        override val arCount: UShort = run {
             _rawData.getUShortAt(ARCOUNT_OFFSET + _offset)
         }
-        override val questions: List<DnsQuestion> = run  {
+        override val questions: List<DnsQuestion> = run {
             var cursor = _offset + DNS_MIN_HEADER_SIZE
             val remainingLen = _length - cursor
             List(qdCount.toInt()) {
@@ -111,10 +111,10 @@ interface DnsHeader : Packet.Header {
                 question
             }
         }
-        private val _questionsLength = run  {
+        private val _questionsLength = run {
             questions.sumOf { it.length }
         }
-        override val answers: List<DnsResourceRecord> = run  {
+        override val answers: List<DnsResourceRecord> = run {
             var cursor = _offset + DNS_MIN_HEADER_SIZE + _questionsLength
             val remainingLen = _length - cursor
 
@@ -128,10 +128,10 @@ interface DnsHeader : Packet.Header {
                 answer
             }
         }
-        private val _answersLength = run  {
+        private val _answersLength = run {
             answers.sumOf { it.length }
         }
-        override val authorities: List<DnsResourceRecord> = run  {
+        override val authorities: List<DnsResourceRecord> = run {
             var cursor = _offset + DNS_MIN_HEADER_SIZE + _questionsLength + _answersLength
             val remainingLen = _length - cursor
             List(nsCount.toInt()) {
@@ -140,10 +140,10 @@ interface DnsHeader : Packet.Header {
                 authority
             }
         }
-        private val _authoritiesLength = run  {
+        private val _authoritiesLength = run {
             authorities.sumOf { it.length }
         }
-        override val additionalInfo: List<DnsResourceRecord> = run  {
+        override val additionalInfo: List<DnsResourceRecord> = run {
             var cursor = _offset + DNS_MIN_HEADER_SIZE + _questionsLength + _answersLength + _authoritiesLength
             val remainingLen = _length - cursor
             List(arCount.toInt()) {
@@ -152,7 +152,7 @@ interface DnsHeader : Packet.Header {
                 authority
             }
         }
-        private val _infoLength = run  {
+        private val _infoLength = run {
             additionalInfo.sumOf { it.length }
         }
         override val length: Int = run {

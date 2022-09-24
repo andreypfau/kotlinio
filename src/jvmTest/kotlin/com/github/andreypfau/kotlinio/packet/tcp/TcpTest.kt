@@ -19,7 +19,8 @@ import kotlin.test.Test
 class TcpTest {
     @Test
     fun test() {
-        val a = hex("45000075953600004011cb290a08000108080808c5790035006132091eb4010000010000000000013775746f6c6a6a79653679346978617a65736a6f6669646c6b72687969616b6977726d6573336d356874686c6336696532683732676c6c740461646e6c000001000100002905c0000000000000")
+        val a =
+            hex("45000075953600004011cb290a08000108080808c5790035006132091eb4010000010000000000013775746f6c6a6a79653679346978617a65736a6f6669646c6b72687969616b6977726d6573336d356874686c6336696532683732676c6c740461646e6c000001000100002905c0000000000000")
         val query = IpPacket.newInstance(a)
         val response = DnsHandler.handleLocalPacket(query)
         val rawData = response!!.rawData
@@ -28,7 +29,8 @@ class TcpTest {
 
     @Test
     fun a() {
-        val h = hex("3775746f6c6a6a79653679346978617a65736a6f6669646c6b72687969616b6977726d6573336d356874686c6336696532683732676c6c740461646e6c0000010001")
+        val h =
+            hex("3775746f6c6a6a79653679346978617a65736a6f6669646c6b72687969616b6977726d6573336d356874686c6336696532683732676c6c740461646e6c0000010001")
         val dnsQuestion = DnsQuestion(h)
         println(h.hex())
         val question = dnsQuestion.builder().build()
@@ -84,6 +86,7 @@ object DnsHandler {
                     payloadBuilder = udpPacketResponse
                 ).build()
                 )
+
             is IPv6Packet ->
                 IPv6Builder(
                     srcAddress = ipPacket.header.dstAddress,
@@ -91,6 +94,7 @@ object DnsHandler {
                     nextHeader = IpProtocol.UDP,
                     payloadBuilder = udpPacketResponse
                 ).build()
+
             else -> throw IllegalArgumentException("Unsupported address: $dstAddress")
         }
     }
@@ -117,7 +121,6 @@ object DnsHandler {
         }.build()
     }
 }
-
 
 
 class HttpHandler(

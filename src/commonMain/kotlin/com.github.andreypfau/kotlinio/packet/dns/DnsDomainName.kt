@@ -1,7 +1,6 @@
 package com.github.andreypfau.kotlinio.packet.dns
 
 import com.github.andreypfau.kotlinio.bits.getUShortAt
-import com.github.andreypfau.kotlinio.utils.hex
 import com.github.andreypfau.kotlinio.utils.toByteArray
 import kotlin.experimental.or
 import kotlin.jvm.JvmStatic

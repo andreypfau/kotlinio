@@ -1,9 +1,7 @@
 package com.github.andreypfau.kotlinio.packet.ethernet
 
 import com.github.andreypfau.kotlinio.address.MacAddress
-import com.github.andreypfau.kotlinio.bits.getShortAt
 import com.github.andreypfau.kotlinio.bits.getUShortAt
-import com.github.andreypfau.kotlinio.packet.AbstractPacket
 import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.utils.toByteArray
 import kotlin.jvm.JvmStatic
@@ -72,6 +70,7 @@ internal class ByteBackedEthernetHeader(
     init {
         require(_length - _offset >= EthernetHeader.ETHERNET_HEADER_SIZE) { "rawData too small" }
     }
+
     override val dstAddress: MacAddress by lazy {
         MacAddress(_rawData, EthernetHeader.DST_ADDR_OFFSET)
     }

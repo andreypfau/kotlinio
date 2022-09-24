@@ -1,8 +1,6 @@
 package com.github.andreypfau.kotlinio.packet.ipv4
 
 import com.github.andreypfau.kotlinio.address.Inet4Address
-import com.github.andreypfau.kotlinio.bits.getIntAt
-import com.github.andreypfau.kotlinio.bits.getShortAt
 import com.github.andreypfau.kotlinio.bits.getUShortAt
 import com.github.andreypfau.kotlinio.bits.toInt
 import com.github.andreypfau.kotlinio.packet.AbstractPacket
@@ -10,10 +8,8 @@ import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.ip.IpPacket
 import com.github.andreypfau.kotlinio.packet.ip.IpProtocol
 import com.github.andreypfau.kotlinio.packet.ip.IpVersion
-import com.github.andreypfau.kotlinio.packet.ipv4.option.IPv4OptionType
 import com.github.andreypfau.kotlinio.packet.ipv4.tos.IPv4Rfc1349Tos
 import com.github.andreypfau.kotlinio.utils.*
-import kotlin.experimental.and
 import kotlin.experimental.or
 
 class IPv4Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {

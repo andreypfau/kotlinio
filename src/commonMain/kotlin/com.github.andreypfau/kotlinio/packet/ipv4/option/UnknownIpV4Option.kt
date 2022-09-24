@@ -19,5 +19,6 @@ class UnknownIpV4Option(
             data.copyInto(this, 2)
         }
 
-    override fun toString(): String = "[option-type: $type] [option-length: $dataLength bytes] [option-data: 0x${data.hex()}]"
+    override fun toString(): String =
+        "[option-type: $type] [option-length: $dataLength bytes] [option-data: 0x${data.hex()}]"
 }

@@ -31,7 +31,8 @@ class IPv4Builder(
     var options: MutableList<IPv4Option> = ArrayList(),
     var padding: ByteArray? = null,
     payloadBuilder: Packet.Builder? = null,
-) : IpPacket.IpBuilder<Inet4Address>, AbstractPacket.AbstractBuilder(), ChecksumBuilder<IPv4Packet>, LengthBuilder<IPv4Packet> {
+) : IpPacket.IpBuilder<Inet4Address>, AbstractPacket.AbstractBuilder(), ChecksumBuilder<IPv4Packet>,
+    LengthBuilder<IPv4Packet> {
     override var correctChecksumAtBuild: Boolean = true
     override var correctLengthAtBuild: Boolean = true
     var paddingAtBuild: Boolean = true
