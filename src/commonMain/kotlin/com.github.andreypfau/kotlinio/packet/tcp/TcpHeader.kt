@@ -89,7 +89,9 @@ class TcpHeader : AbstractPacket.AbstractHeader, TransportHeader {
     val padding: ByteArray
 
     constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
-        require(length >= MIN_TCP_HEADER_SIZE)
+        require(length >= MIN_TCP_HEADER_SIZE) {
+            "expected: length >= MIN_TCP_HEADER_SIZE ($MIN_TCP_HEADER_SIZE), actual: $length"
+        }
         srcPort = rawData.getUShortAt(SRC_PORT_OFFSET + offset)
         dstPort = rawData.getUShortAt(DST_PORT_OFFSET + offset)
         sequenceNumber = rawData.getUIntAt(SEQUENCE_NUMBER_OFFSET + offset)
@@ -110,8 +112,12 @@ class TcpHeader : AbstractPacket.AbstractHeader, TransportHeader {
         urgentPointer = rawData.getUShortAt(URGENT_POINTER_OFFSET + offset)
 
         val headerLength = dataOffset.toInt() * 4
-        require(length >= headerLength)
-        require(headerLength >= OPTIONS_OFFSET)
+        require(length >= headerLength) {
+            "expected: length >= headerLength ($headerLength), actual: $length"
+        }
+        require(headerLength >= OPTIONS_OFFSET) {
+            "expected headerLength >= OPTIONS_OFFSET ($OPTIONS_OFFSET), actual: $headerLength"
+        }
         options = ArrayList()
         val currentOffsetInHeader = OPTIONS_OFFSET
         // TODO: parse options
@@ -156,8 +162,8 @@ class TcpHeader : AbstractPacket.AbstractHeader, TransportHeader {
         }
         checksum = if (builder.correctChecksumAtBuild) {
             calcChecksum(
-                requireNotNull(builder.srcAddress),
-                requireNotNull(builder.dstAddress),
+                requireNotNull(builder.srcAddress) { "expected builder.srcAddress != null" },
+                requireNotNull(builder.dstAddress) { "expected builder.dstAddress != null" },
                 buildRawData(true),
                 payload
             )

@@ -19,3 +19,5 @@ fun ByteArray.setUByteAt(index: Int, value: UByte) = set(index, value.toByte())
 fun ByteArray.setUShortAt(index: Int, value: UShort) = setShortAt(index, value.toShort())
 fun ByteArray.setUIntAt(index: Int, value: UInt) = setIntAt(index, value.toInt())
 fun ByteArray.setULongAt(index: Int, value: ULong) = setLongAt(index, value.toLong())
+
+fun Boolean.toInt(): Int = if (this) 1 else 0

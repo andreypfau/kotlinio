@@ -51,9 +51,9 @@ class IPv4Packet : AbstractPacket, IpPacket {
         header.tos,
         header.totalLength,
         header.identification,
-        header.reservedFlag,
-        header.dontFragmentFlag,
-        header.moreFragmentFlag,
+        header.reservedBit,
+        header.dontFragment,
+        header.moreFragments,
         header.fragmentOffset,
         header.ttl,
         header.protocol,
@@ -103,7 +103,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
                     val builder = packet.builder()
                     builder.apply {
                         moreFragmentFlag = true
-                        fragmentOffset = (srcPos / 8).toShort()
+                        fragmentOffset = (srcPos / 8).toUShort()
                         payloadBuilder = SimplePacket.Builder(fragmentedPayload)
                     }
                     list.add(builder.build())
@@ -120,7 +120,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
                     val builder = packet.builder()
                     builder.apply {
                         moreFragmentFlag = false
-                        fragmentOffset = (srcPos / 8).toShort()
+                        fragmentOffset = (srcPos / 8).toUShort()
                         payloadBuilder = SimplePacket.Builder(fragmentedPayload)
                     }
                     list.add(builder.build())
@@ -141,7 +141,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
             if (packets.size == 1) return packets.first()
             val sorted = packets.sortedBy { it.header.fragmentOffset }
             val lastPacketHeader = sorted.last().header
-            val payloadLength = lastPacketHeader.fragmentOffset * 8 +
+            val payloadLength = lastPacketHeader.fragmentOffset.toInt() * 8 +
                 lastPacketHeader.totalLength.toInt() -
                 lastPacketHeader.ihl * 4
             require(payloadLength > 0) { "Can't defragment: $sorted" }
@@ -160,7 +160,7 @@ class IPv4Packet : AbstractPacket, IpPacket {
             val builder = firstPacket.builder()
             builder.apply {
                 moreFragmentFlag = false
-                fragmentOffset = 0
+                fragmentOffset = 0u
                 payloadBuilder = firstPacket.header.protocol.packet(defragmentedPayload).builder()
             }
             return builder.build()

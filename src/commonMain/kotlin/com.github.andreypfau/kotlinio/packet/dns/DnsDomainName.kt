@@ -1,6 +1,7 @@
 package com.github.andreypfau.kotlinio.packet.dns
 
 import com.github.andreypfau.kotlinio.bits.getUShortAt
+import com.github.andreypfau.kotlinio.utils.hex
 import com.github.andreypfau.kotlinio.utils.toByteArray
 import kotlin.experimental.or
 import kotlin.jvm.JvmStatic
@@ -69,7 +70,6 @@ interface DnsDomainName {
                         terminated = true
                         break
                     }
-
                     cursor++
                     require(length - cursor >= len) { "The data is too short to build a DnsDomainName" }
                     val labelOffset = offset + cursor
@@ -81,7 +81,7 @@ interface DnsDomainName {
                     terminated = true
                     break
                 } else {
-                    throw IllegalArgumentException("A label must start with 00 or 11")
+                    throw IllegalArgumentException("A label must start with 00 or 11, actual: ${flag.toString(2)}")
                 }
             }
 
@@ -126,11 +126,8 @@ interface DnsDomainName {
             }
             val pointer = pointer
             if (pointer != null) {
-
                 pointer.toByteArray(buf, offset + cursor)
-
                 buf[offset + cursor] = buf[offset + cursor] or 0xC0.toByte()
-
             }
             return buf
         }

@@ -33,7 +33,7 @@ class IPv6Packet : AbstractPacket, IpPacket {
         header = IPv6Header(builder, payload)
     }
 
-    override fun builder(): Packet.Builder = IPv6Builder(
+    override fun builder() = IPv6Builder(
         header.version,
         header.trafficClass,
         header.flowLabel,

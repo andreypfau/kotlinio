@@ -101,7 +101,7 @@ interface DnsQuestion {
         }
 
         override fun toByteArray(buf: ByteArray, offset: Int): ByteArray {
-            return _rawData.copyInto(buf, offset, 0, _length)
+            return _rawData.copyInto(buf, offset, _offset, _offset + length)
         }
     }
 

@@ -42,6 +42,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit5"))
+                implementation("org.pcap4j:pcap4j-distribution:1.8.2")
             }
         }
         val nativeMain by creating {

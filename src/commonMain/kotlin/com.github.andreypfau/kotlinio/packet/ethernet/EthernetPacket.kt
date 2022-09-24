@@ -4,6 +4,7 @@ import com.github.andreypfau.kotlinio.address.MacAddress
 import com.github.andreypfau.kotlinio.packet.AbstractPacket
 import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.ipv4.IPv4Builder
+import com.github.andreypfau.kotlinio.packet.ipv6.IPv6Builder
 import com.github.andreypfau.kotlinio.utils.hex
 
 @Suppress("EqualsOrHashCode") // hashCode already has in AbstractPacket. IntelliJ bug?
@@ -15,7 +16,7 @@ class EthernetPacket : AbstractPacket {
     val padding get() = _padding.copyOf()
 
     constructor(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) {
-        header = EthernetHeader(rawData, offset, length)
+        header = ByteBackedEthernetHeader(rawData, offset, length)
         if ((header.type.value and 0xFFFFu).toInt() <= EtherType.IEEE802_3_MAX_LENGTH) {
             val payloadLength = header.type.value.toInt()
             val payloadOffset = offset + header.length
@@ -23,7 +24,7 @@ class EthernetPacket : AbstractPacket {
             val paddingOffset = payloadOffset + payloadLength
             require(paddingLength >= 0)
             payload = if (payloadLength > 0) {
-                header.type.payloadFactory(rawData, payloadOffset, payloadLength)
+                header.type.payload(rawData, payloadOffset, payloadLength)
             } else {
                 null
             }
@@ -36,7 +37,7 @@ class EthernetPacket : AbstractPacket {
             val payloadAndPaddingLength = length - header.length
             if (payloadAndPaddingLength > 0) {
                 val payloadOffset = offset + header.length
-                payload = header.type.payloadFactory(rawData, payloadOffset, payloadAndPaddingLength)
+                payload = header.type.payload(rawData, payloadOffset, payloadAndPaddingLength)
                 val paddingLength = payloadAndPaddingLength - payload.length
                 _padding = if (paddingLength > 0) {
                     val paddingOffset = payloadOffset + payload.length
@@ -53,7 +54,11 @@ class EthernetPacket : AbstractPacket {
 
     constructor(builder: EthernetBuilder) {
         payload = builder.payloadBuilder?.build()
-        header = EthernetHeader(builder)
+        header = FieldBackedEthernetHeader(
+            requireNotNull(builder.dstAddress) { "dstAddress" },
+            requireNotNull(builder.srcAddress) { "srcAddress" },
+            requireNotNull(builder.type) { "type" }
+        )
         val payloadLength = payload?.length ?: 0
         _padding = if (builder.paddingAtBuild) {
             if (payloadLength < MIN_ETHERNET_PAYLOAD_LENGTH) {
@@ -103,7 +108,8 @@ class EthernetPacket : AbstractPacket {
         header.dstAddress,
         header.srcAddress,
         header.type,
-        _padding
+        _padding,
+        payload?.builder()
     )
 
     class EthernetBuilder(
@@ -117,6 +123,7 @@ class EthernetPacket : AbstractPacket {
             set(value) {
                 field = value.also {
                     if (it is IPv4Builder) type = EtherType.IPv4
+                    if (it is IPv6Builder) type = EtherType.IPV6
                 }
             }
         var paddingAtBuild: Boolean = true

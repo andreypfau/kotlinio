@@ -39,7 +39,7 @@ class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
     }
 
     constructor(builder: IPv6Builder, payload: Packet?) {
-        version = builder.version
+        version = requireNotNull(builder.version)
         trafficClass = builder.trafficClass
         flowLabel = builder.flowLabel
         nextHeader = requireNotNull(builder.nextHeader) { "nextHeader == null" }

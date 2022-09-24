@@ -9,9 +9,12 @@ import com.github.andreypfau.kotlinio.utils.NamedValue
 class EtherType private constructor(
     override val value: UShort,
     override val name: String,
-    val payloadFactory: (ByteArray, Int, Int) -> Packet = ::SimplePacket
+    private val payloadFactory: (ByteArray, Int, Int) -> Packet = ::SimplePacket
 ) : NamedValue<UShort, EtherType>() {
     override fun compareTo(other: EtherType): Int = value.compareTo(other.value)
+
+    fun payload(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): Packet =
+        payloadFactory(rawData, offset, length)
 
     companion object {
         private val registry = HashMap<UShort, EtherType>()

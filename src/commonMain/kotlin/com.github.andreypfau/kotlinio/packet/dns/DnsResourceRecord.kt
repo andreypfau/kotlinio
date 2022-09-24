@@ -149,7 +149,7 @@ interface DnsResourceRecord {
         }
 
         override fun toByteArray(destination: ByteArray, offset: Int): ByteArray {
-            return _rawData.copyInto(destination, offset, 0, length)
+            return _rawData.copyInto(destination, offset, _offset, _offset + length)
         }
     }
 

@@ -4,6 +4,7 @@ import com.github.andreypfau.kotlinio.address.Inet6Address
 import com.github.andreypfau.kotlinio.packet.AbstractPacket
 import com.github.andreypfau.kotlinio.packet.LengthBuilder
 import com.github.andreypfau.kotlinio.packet.Packet
+import com.github.andreypfau.kotlinio.packet.ip.IpPacket
 import com.github.andreypfau.kotlinio.packet.ip.IpProtocol
 import com.github.andreypfau.kotlinio.packet.ip.IpVersion
 import com.github.andreypfau.kotlinio.packet.tcp.TcpBuilder
@@ -11,16 +12,21 @@ import com.github.andreypfau.kotlinio.packet.transport.TransportBuilder
 import com.github.andreypfau.kotlinio.packet.udp.UdpBuilder
 
 class IPv6Builder(
-    var version: IpVersion = IpVersion.IPv6,
+    override var version: IpVersion? = IpVersion.IPv6,
     var trafficClass: UByte = 0u,
     var flowLabel: UInt = 0u,
     var payloadLength: UShort = 0u,
     var nextHeader: IpProtocol? = null,
     var hopLimit: UByte = 100u,
-    var srcAddress: Inet6Address? = null,
-    var dstAddress: Inet6Address? = null,
+    override var srcAddress: Inet6Address? = null,
+    override var dstAddress: Inet6Address? = null,
     payloadBuilder: Packet.Builder? = null
-) : AbstractPacket.AbstractBuilder(), LengthBuilder<IPv6Packet> {
+) : AbstractPacket.AbstractBuilder(), LengthBuilder<IPv6Packet>, IpPacket.IpBuilder<Inet6Address> {
+    override var protocol: IpProtocol?
+        get() = nextHeader
+        set(value) {
+            nextHeader = value
+        }
     override var payloadBuilder: Packet.Builder? = payloadBuilder
         set(value) {
             field = value.also {

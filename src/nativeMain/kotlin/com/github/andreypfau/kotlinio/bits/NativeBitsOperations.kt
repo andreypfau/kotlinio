@@ -2,8 +2,9 @@ package com.github.andreypfau.kotlinio.bits
 
 import kotlinx.cinterop.*
 
+// TODO: fix unaligned access support
 @PublishedApi
-internal val unalignedAccessSupported = UNALIGNED_ACCESS_ALLOWED == 1
+internal val unalignedAccessSupported = false
 
 actual fun ByteArray.getShortAt(index: Int): Short = usePinned {
     if (unalignedAccessSupported) {

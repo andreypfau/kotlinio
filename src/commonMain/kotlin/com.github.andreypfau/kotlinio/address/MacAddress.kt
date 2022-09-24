@@ -3,21 +3,21 @@ package com.github.andreypfau.kotlinio.address
 import kotlin.experimental.and
 
 class MacAddress(
-    private val data: ByteArray,
-    private val offset: Int = 0,
+    private val _rawData: ByteArray,
+    private val _offset: Int = 0,
 ) : LinkLayerAddress() {
     constructor(data: ByteArray) : this(data.copyOf(SIZE_BYTES), 0)
 
     init {
-        require(offset + SIZE_BYTES <= data.size)
+        require(_offset + SIZE_BYTES <= _rawData.size)
     }
 
-    val isUnicast get() = (data[offset] and 1) == 0.toByte()
-    val isGloballyUnique get() = (data[offset] and 2) == 0.toByte()
+    val isUnicast get() = (_rawData[_offset] and 1) == 0.toByte()
+    val isGloballyUnique get() = (_rawData[_offset] and 2) == 0.toByte()
     override val size: Int = SIZE_BYTES
 
     override fun toByteArray(destination: ByteArray, offset: Int) =
-        data.copyInto(destination, offset)
+        _rawData.copyInto(destination, offset, _offset, _offset + SIZE_BYTES)
 
     companion object {
         val ETHER_BROADCAST_ADDRESS = MacAddress(

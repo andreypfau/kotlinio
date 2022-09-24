@@ -5,9 +5,9 @@ abstract class NamedValue<T : Comparable<T>, U : NamedValue<T, U>> : Comparable<
     abstract val name: String
 
     override fun toString(): String = buildString {
-        append(value)
-        append(" (")
         append(name)
+        append(" (")
+        append(value)
         append(")")
     }
 
