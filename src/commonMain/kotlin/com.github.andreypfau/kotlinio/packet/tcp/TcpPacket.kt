@@ -5,6 +5,9 @@ import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.simple.SimplePacket
 import com.github.andreypfau.kotlinio.packet.transport.TransportPacket
 
+fun TcpPacket(builder: TcpBuilder.() -> Unit): TcpPacket =
+    TcpBuilder().apply(builder).build()
+
 class TcpPacket : AbstractPacket, TransportPacket {
     override val header: TcpHeader
     override val payload: Packet?

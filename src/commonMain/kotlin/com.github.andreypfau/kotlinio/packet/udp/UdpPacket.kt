@@ -5,6 +5,9 @@ import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.simple.SimplePacket
 import com.github.andreypfau.kotlinio.packet.transport.TransportPacket
 
+fun UdpPacket(builder: UdpBuilder.() -> Unit): UdpPacket =
+    UdpBuilder().apply(builder).build()
+
 class UdpPacket : AbstractPacket, TransportPacket {
     override val header: UdpHeader
     override val payload: Packet?

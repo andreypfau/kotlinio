@@ -21,7 +21,7 @@ kotlin {
         }
     }
     val hostOs = System.getProperty("os.name")
-    val allTarget = false
+    val allTarget = true
     val isMingw = hostOs.startsWith("Windows")
     val isLinux = hostOs.startsWith("Linux")
     val isMacos = hostOs.startsWith("Mac OS")
@@ -68,16 +68,16 @@ kotlin {
             }
         }
 
-        if (isMingw || allTarget) {
-            mingwX64()
-
-            val mingwMain by creating {
-                dependsOn(nativeMain)
-            }
-            val mingwX64Main by getting {
-                dependsOn(mingwMain)
-            }
-        }
+//        if (isMingw || allTarget) {
+//            mingwX64()
+//
+//            val mingwMain by creating {
+//                dependsOn(nativeMain)
+//            }
+//            val mingwX64Main by getting {
+//                dependsOn(mingwMain)
+//            }
+//        }
 
         if (isLinux || allTarget) {
             linuxX64()
