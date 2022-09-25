@@ -20,9 +20,7 @@ class EtherType private constructor(
         private val registry = HashMap<UShort, EtherType>()
 
         const val IEEE802_3_MAX_LENGTH = 1500
-        val IPv4 = set(0x0800u, "IPv4") { buf, off, len ->
-            IpV4Packet.newInstance(buf, off, len)
-        }
+        val IPv4 = set(0x0800u, "IPv4", ::IpV4Packet)
         val ARP = set(0x0806u, "ARP")
         val DOT1Q_VLAN_TAGGED_FRAMES = set(0x8100u, "IEEE 802.1Q VLAN-tagged frames")
         val RARP = set(0x8035u, "RARP")

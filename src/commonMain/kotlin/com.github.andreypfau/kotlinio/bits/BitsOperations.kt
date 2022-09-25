@@ -44,12 +44,12 @@ fun UByte.setBitAt(index: Int, value: Boolean): UByte {
     }.toUByte()
 }
 
-fun Byte.getBitAt(index: Int, value: Boolean): Boolean {
+fun Byte.getBitAt(index: Int): Boolean {
     val bitMask = bitMask(index)
     return (toInt() and bitMask) != 0
 }
 
-fun UByte.getBitAt(index: Int, value: Boolean): Boolean {
+fun UByte.getBitAt(index: Int): Boolean {
     val bitMask = bitMask(index)
     return (toInt() and bitMask) != 0
 }

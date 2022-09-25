@@ -1,10 +1,10 @@
 package com.github.andreypfau.kotlinio.packet.ethernet
 
-import com.github.andreypfau.kotlinio.address.MacAddress
 import com.github.andreypfau.kotlinio.packet.AbstractPacket
 import com.github.andreypfau.kotlinio.packet.Packet
-import com.github.andreypfau.kotlinio.packet.ipv4.IpV4Builder
-import com.github.andreypfau.kotlinio.packet.ipv6.IPv6Builder
+import com.github.andreypfau.kotlinio.packet.ethernet.header.ByteBackedEthernetHeader
+import com.github.andreypfau.kotlinio.packet.ethernet.header.EthernetHeader
+import com.github.andreypfau.kotlinio.packet.ethernet.header.FieldBackedEthernetHeader
 import com.github.andreypfau.kotlinio.utils.hex
 
 @Suppress("EqualsOrHashCode") // hashCode already has in AbstractPacket. IntelliJ bug?
@@ -111,25 +111,6 @@ class EthernetPacket : AbstractPacket {
         _padding,
         payload?.builder()
     )
-
-    class EthernetBuilder(
-        var dstAddress: MacAddress? = null,
-        var srcAddress: MacAddress? = null,
-        var type: EtherType? = null,
-        var padding: ByteArray? = null,
-        payloadBuilder: Packet.Builder? = null
-    ) : AbstractBuilder() {
-        override var payloadBuilder: Packet.Builder? = payloadBuilder
-            set(value) {
-                field = value.also {
-                    if (it is IpV4Builder) type = EtherType.IPv4
-                    if (it is IPv6Builder) type = EtherType.IPV6
-                }
-            }
-        var paddingAtBuild: Boolean = true
-
-        override fun build(): EthernetPacket = EthernetPacket(this)
-    }
 
     companion object {
         const val MIN_ETHERNET_PAYLOAD_LENGTH = 46
