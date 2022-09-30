@@ -2,7 +2,8 @@ package com.github.andreypfau.kotlinio.packet.ip
 
 import com.github.andreypfau.kotlinio.address.InetAddress
 import com.github.andreypfau.kotlinio.packet.Packet
-import com.github.andreypfau.kotlinio.packet.ipv6.IPv6Packet
+import com.github.andreypfau.kotlinio.packet.ipv4.IpV4Packet
+import com.github.andreypfau.kotlinio.packet.ipv6.IpV6Packet
 
 interface IpPacket : Packet {
 
@@ -29,8 +30,8 @@ interface IpPacket : Packet {
     companion object {
         fun newInstance(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset): IpPacket {
             return when (IpVersion[((rawData[offset].toInt() and 0xF0) shr 4).toByte()]) {
-                IpVersion.IPv4 -> TODO()
-                IpVersion.IPv6 -> IPv6Packet(rawData, offset, length)
+                IpVersion.IPv4 -> IpV4Packet(rawData, offset, length)
+                IpVersion.IPv6 -> IpV6Packet(rawData, offset, length)
             }
         }
     }

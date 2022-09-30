@@ -2,7 +2,7 @@ package com.github.andreypfau.kotlinio.packet.ethernet
 
 import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.ipv4.IpV4Packet
-import com.github.andreypfau.kotlinio.packet.ipv6.IPv6Packet
+import com.github.andreypfau.kotlinio.packet.ipv6.IpV6Packet
 import com.github.andreypfau.kotlinio.packet.simple.SimplePacket
 import com.github.andreypfau.kotlinio.utils.NamedValue
 
@@ -25,7 +25,7 @@ class EtherType private constructor(
         val DOT1Q_VLAN_TAGGED_FRAMES = set(0x8100u, "IEEE 802.1Q VLAN-tagged frames")
         val RARP = set(0x8035u, "RARP")
         val APPLETALK = set(0x809bu, "Appletalk")
-        val IPV6 = set(0x86ddu, "IPv6", ::IPv6Packet)
+        val IPV6 = set(0x86ddu, "IPv6", ::IpV6Packet)
         val PPP = set(0x880bu, "PPP")
         val MPLS = set(0x8847u, "MPLS")
         val PPPOE_DISCOVERY_STAGE = set(0x8863u, "PPPoE Discovery Stage")

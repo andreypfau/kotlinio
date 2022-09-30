@@ -11,7 +11,7 @@ import com.github.andreypfau.kotlinio.packet.tcp.TcpBuilder
 import com.github.andreypfau.kotlinio.packet.transport.TransportBuilder
 import com.github.andreypfau.kotlinio.packet.udp.UdpBuilder
 
-class IPv6Builder(
+class IpV6Builder(
     override var version: IpVersion = IpVersion.IPv6,
     var trafficClass: UByte = 0u,
     var flowLabel: UInt = 0u,
@@ -21,7 +21,7 @@ class IPv6Builder(
     override var srcAddress: Inet6Address = Inet6Address(),
     override var dstAddress: Inet6Address = Inet6Address(),
     payloadBuilder: Packet.Builder? = null
-) : AbstractPacket.AbstractBuilder(), LengthBuilder<IPv6Packet>, IpPacket.IpBuilder<Inet6Address> {
+) : AbstractPacket.AbstractBuilder(), LengthBuilder<IpV6Packet>, IpPacket.IpBuilder<Inet6Address> {
     override var protocol: IpProtocol?
         get() = nextHeader
         set(value) {
@@ -41,5 +41,5 @@ class IPv6Builder(
 
     override var correctLengthAtBuild: Boolean = true
 
-    override fun build(): IPv6Packet = IPv6Packet(this)
+    override fun build(): IpV6Packet = IpV6Packet(this)
 }

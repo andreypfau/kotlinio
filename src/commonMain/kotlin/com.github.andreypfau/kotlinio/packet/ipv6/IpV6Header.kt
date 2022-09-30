@@ -11,7 +11,7 @@ import com.github.andreypfau.kotlinio.packet.ip.IpVersion
 import com.github.andreypfau.kotlinio.utils.toByteArray
 import com.github.andreypfau.kotlinio.utils.ushr
 
-class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
+class IpV6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
     override val version: IpVersion
     val trafficClass: UByte
     val flowLabel: UInt
@@ -38,7 +38,7 @@ class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
         dstAddress = Inet6Address(rawData, DST_ADDR_OFFSET + offset)
     }
 
-    constructor(builder: IPv6Builder, payload: Packet?) {
+    constructor(builder: IpV6Builder, payload: Packet?) {
         version = requireNotNull(builder.version)
         trafficClass = builder.trafficClass
         flowLabel = builder.flowLabel
@@ -82,7 +82,7 @@ class IPv6Header : AbstractPacket.AbstractHeader, IpPacket.IpHeader {
         if (other == null || this::class != other::class) return false
         if (!super.equals(other)) return false
 
-        other as IPv6Header
+        other as IpV6Header
 
         if (srcAddress != other.srcAddress) return false
         if (dstAddress != other.dstAddress) return false

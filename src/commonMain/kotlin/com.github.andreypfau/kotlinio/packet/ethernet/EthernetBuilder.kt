@@ -4,7 +4,7 @@ import com.github.andreypfau.kotlinio.address.MacAddress
 import com.github.andreypfau.kotlinio.packet.AbstractPacket
 import com.github.andreypfau.kotlinio.packet.Packet
 import com.github.andreypfau.kotlinio.packet.ipv4.IpV4Builder
-import com.github.andreypfau.kotlinio.packet.ipv6.IPv6Builder
+import com.github.andreypfau.kotlinio.packet.ipv6.IpV6Builder
 
 class EthernetBuilder(
     var dstAddress: MacAddress? = null,
@@ -17,7 +17,7 @@ class EthernetBuilder(
         set(value) {
             field = value.also {
                 if (it is IpV4Builder) type = EtherType.IPv4
-                if (it is IPv6Builder) type = EtherType.IPV6
+                if (it is IpV6Builder) type = EtherType.IPV6
             }
         }
     var paddingAtBuild: Boolean = true
