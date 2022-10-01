@@ -4,8 +4,9 @@ import com.github.andreypfau.kotlinio.address.Inet4Address
 import com.github.andreypfau.kotlinio.address.InetAddress
 import com.github.andreypfau.kotlinio.address.InetSocketAddress
 import com.github.andreypfau.kotlinio.packet.ip.IpVersion
+import com.github.andreypfau.kotlinio.pool.Closeable
 
-expect class Socket(fd: Int) {
+expect class Socket(fd: Int) : Closeable {
     constructor(addressFamily: Int, type: Int, protocol: Int)
 
     val fd: Int
@@ -17,7 +18,6 @@ expect class Socket(fd: Int) {
     fun receive(buffer: ByteArray, offset: Int = 0): Pair<Int, InetSocketAddress>?
     fun read(buffer: ByteArray, offset: Int = 0): Int
     fun write(buffer: ByteArray, offset: Int = 0): Int
-    fun close()
 
     companion object {
         fun udp(version: IpVersion = IpVersion.IPv4): Socket

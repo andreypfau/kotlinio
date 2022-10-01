@@ -8,6 +8,7 @@ version = "1.0-SNAPSHOT"
 
 allprojects {
     apply(plugin = "kotlin-multiplatform")
+    apply(plugin = "maven-publish")
 
     repositories {
         mavenCentral()
@@ -108,6 +109,15 @@ kotlin {
                     val bits by creating {
                         defFile(file("src/nativeMain/interop/bits.def"))
                     }
+                }
+            }
+        }
+    }
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                subprojects {
+                    implementation(this)
                 }
             }
         }

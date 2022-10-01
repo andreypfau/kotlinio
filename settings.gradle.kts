@@ -12,5 +12,4 @@ pluginManagement {
 }
 
 include(":kotlinio-base64")
-include(":kotlinio-network")
-include(":kotlinio-packet")
+include(":kotlinio-pool")

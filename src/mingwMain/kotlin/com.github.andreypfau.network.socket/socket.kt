@@ -3,6 +3,7 @@ package com.github.andreypfau.kotlinio.socket
 import com.github.andreypfau.kotlinio.address.InetAddress
 import com.github.andreypfau.kotlinio.address.InetSocketAddress
 import com.github.andreypfau.kotlinio.packet.ip.IpVersion
+import com.github.andreypfau.kotlinio.pool.Closeable
 import com.github.andreypfau.kotlinio.utils.check
 import com.github.andreypfau.kotlinio.utils.inetSocketAddress
 import com.github.andreypfau.kotlinio.utils.sockaddr
@@ -11,7 +12,7 @@ import platform.posix.*
 
 actual class Socket actual constructor(
     actual val fd: Int
-) {
+) : Closeable {
     actual constructor(addressFamily: Int, type: Int, protocol: Int) : this(
         socket(addressFamily, type, protocol).toInt().check()
     )
@@ -62,7 +63,7 @@ actual class Socket actual constructor(
         return result
     }
 
-    actual fun close() {
+    override fun close() {
         close(fd)
     }
 

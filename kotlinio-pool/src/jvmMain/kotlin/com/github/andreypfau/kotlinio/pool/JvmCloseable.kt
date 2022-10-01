@@ -1,4 +1,4 @@
-package com.github.andreypfau.kotlinio
+package com.github.andreypfau.kotlinio.pool
 
 import java.lang.reflect.Method
 

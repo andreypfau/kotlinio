@@ -1,4 +1,4 @@
-package com.github.andreypfau.kotlinio
+package com.github.andreypfau.kotlinio.pool
 
 expect interface Closeable {
     fun close()

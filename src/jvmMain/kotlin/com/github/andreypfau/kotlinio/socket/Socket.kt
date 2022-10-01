@@ -4,8 +4,9 @@ import com.github.andreypfau.kotlinio.address.Inet4Address
 import com.github.andreypfau.kotlinio.address.InetAddress
 import com.github.andreypfau.kotlinio.address.InetSocketAddress
 import com.github.andreypfau.kotlinio.packet.ip.IpVersion
+import com.github.andreypfau.kotlinio.pool.Closeable
 
-actual class Socket actual constructor(fd: Int) {
+actual class Socket actual constructor(fd: Int) : Closeable {
     init {
         TODO("Not yet implemented")
     }
@@ -23,7 +24,7 @@ actual class Socket actual constructor(fd: Int) {
 
     actual fun write(buffer: ByteArray, offset: Int): Int = 0
 
-    actual fun close() {
+    override fun close() {
     }
 
     actual fun bind(address: InetAddress, port: UShort) {

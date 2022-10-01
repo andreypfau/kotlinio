@@ -1,7 +1,5 @@
 package com.github.andreypfau.kotlinio.pool
 
-import com.github.andreypfau.kotlinio.Closeable
-
 interface ObjectPool<T : Any> : Closeable {
     val capacity: Int
 

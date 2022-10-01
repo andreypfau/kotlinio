@@ -1,4 +1,4 @@
-package com.github.andreypfau.kotlinio
+package com.github.andreypfau.kotlinio.pool
 
 actual interface Closeable {
     actual fun close()
