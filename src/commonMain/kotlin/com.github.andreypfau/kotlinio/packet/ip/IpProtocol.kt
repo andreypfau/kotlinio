@@ -5,6 +5,7 @@ import com.github.andreypfau.kotlinio.packet.simple.SimplePacket
 import com.github.andreypfau.kotlinio.packet.tcp.TcpPacket
 import com.github.andreypfau.kotlinio.packet.udp.UdpPacket
 import com.github.andreypfau.kotlinio.utils.NamedValue
+import com.github.andreypfau.kotlinio.utils.hex
 
 class IpProtocol private constructor(
     override val value: Byte,
@@ -14,7 +15,11 @@ class IpProtocol private constructor(
     override fun compareTo(other: IpProtocol): Int = value.compareTo(other.value)
 
     fun packet(rawData: ByteArray, offset: Int = 0, length: Int = rawData.size - offset) =
-        factory(rawData, offset, length)
+        try {
+            factory(rawData, offset, length)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Can't create packet payload for $this, offset=$offset, length=$length, rawData=${rawData.hex()}")
+        }
 
     companion object {
         private val registry = HashMap<Byte, IpProtocol>()

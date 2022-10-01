@@ -1,8 +1,8 @@
-package com.github.andreypfau.network.utils
+package com.github.andreypfau.kotlinio.utils
 
-import com.github.andreypfau.network.address.Inet4Address
-import com.github.andreypfau.network.address.InetAddress
-import com.github.andreypfau.network.address.InetSocketAddress
+import com.github.andreypfau.kotlinio.address.Inet4Address
+import com.github.andreypfau.kotlinio.address.InetAddress
+import com.github.andreypfau.kotlinio.address.InetSocketAddress
 import kotlinx.cinterop.*
 import platform.posix.AF_INET
 import platform.posix.sockaddr
