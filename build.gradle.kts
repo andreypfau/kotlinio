@@ -25,7 +25,7 @@ allprojects {
             }
         }
         val hostOs = System.getProperty("os.name")
-        val allTarget = true
+        val allTarget = false
         val isMingw = hostOs.startsWith("Windows")
         val isLinux = hostOs.startsWith("Linux")
         val isMacos = hostOs.startsWith("Mac OS")
@@ -51,7 +51,6 @@ allprojects {
             }
             val nativeMain by creating {
                 dependsOn(commonMain)
-//
             }
 
             if (isMacos) {
