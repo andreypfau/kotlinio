@@ -7,6 +7,16 @@ class MacAddress(
     private val _offset: Int = 0,
 ) : LinkLayerAddress() {
     constructor(data: ByteArray) : this(data.copyOf(SIZE_BYTES), 0)
+    constructor(string: String) : this(
+        try {
+            string.split(":", "-").let { octets ->
+                require(octets.size == 6)
+                octets.map { it.toInt(16).toByte() }.toByteArray()
+            }
+        } catch(e: Exception) {
+            throw IllegalArgumentException("Can't parse MacAddress: '$string'", e)
+        }
+    )
 
     init {
         require(_offset + SIZE_BYTES <= _rawData.size)
