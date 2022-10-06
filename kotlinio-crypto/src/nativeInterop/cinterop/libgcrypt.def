@@ -1,0 +1,15 @@
+headers = gcrypt.h
+package = gcrypt
+staticLibraries = libgcrypt.a libgpg-error.a
+libraryPaths.osx = /opt/homebrew/Cellar/libgcrypt/1.10.1/lib/ /opt/homebrew/Cellar/libgpg-error/1.45/lib/
+compilerOpts.osx = -I/opt/homebrew/Cellar/libgcrypt/1.10.1/include/ -I/opt/homebrew/Cellar/libgpg-error/1.45/include/
+
+---
+
+typedef struct gcry_cipher_handle {
+    void* _;
+} *gcry_cipher_hd_t;
+
+typedef struct gcry_sexp {
+    void* _;
+} *gcry_sexp_t;

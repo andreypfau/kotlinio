@@ -12,4 +12,6 @@ pluginManagement {
 }
 
 include(":kotlinio-base64")
+include(":kotlinio-hex")
 include(":kotlinio-pool")
+include(":kotlinio-crypto")
