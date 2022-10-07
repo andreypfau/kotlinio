@@ -19,10 +19,4 @@ kotlin {
             }
         }
     }
-
-    macosArm64() {
-        binaries {
-            executable()
-        }
-    }
 }

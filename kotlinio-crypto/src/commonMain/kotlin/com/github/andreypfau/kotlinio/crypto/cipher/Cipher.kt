@@ -1,7 +1,6 @@
 package com.github.andreypfau.kotlinio.crypto.cipher
 
 import com.github.andreypfau.kotlinio.pool.Closeable
-import com.github.andreypfau.kotlinio.pool.DirectAllocationPool
 
 interface Cipher : Closeable {
     val mode: CipherMode
@@ -54,9 +53,4 @@ enum class CipherMode {
     OFB,
     CTR,
     GCM
-}
-
-internal fun interface CipherPool<T : Cipher> : DirectAllocationPool<T> {
-    override fun borrow(): T
-    override fun recycle(instance: T) = instance.close()
 }

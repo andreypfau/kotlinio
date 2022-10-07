@@ -3,12 +3,12 @@ plugins {
     `maven-publish`
 }
 
-group = "com.github.andreypfau"
-version = "1.0-SNAPSHOT"
-
 allprojects {
     apply(plugin = "kotlin-multiplatform")
     apply(plugin = "maven-publish")
+
+    group = "com.github.andreypfau"
+    version = "1.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
@@ -25,7 +25,7 @@ allprojects {
             }
         }
         val hostOs = System.getProperty("os.name")
-        val allTarget = false
+        val allTarget = true
         val isMingw = hostOs.startsWith("Windows")
         val isLinux = hostOs.startsWith("Linux")
         val isMacos = hostOs.startsWith("Mac OS")
@@ -84,7 +84,6 @@ allprojects {
 
             if (isLinux || allTarget) {
                 linuxX64()
-//            linuxArm64()
 
                 val linuxMain by creating {
                     dependsOn(nativeMain)
@@ -92,9 +91,6 @@ allprojects {
                 val linuxX64Main by getting {
                     dependsOn(linuxMain)
                 }
-//            val linuxArm64Main by getting {
-//                dependsOn(linuxMain)
-//            }
             }
         }
     }
