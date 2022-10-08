@@ -6,7 +6,7 @@ import javax.crypto.spec.SecretKeySpec
 
 abstract class JvmCipher internal constructor(
     private val algorithm: String,
-    final override val mode: CipherMode
+    override val mode: CipherMode
 ) : Cipher {
     private var encryptCipher = javax.crypto.Cipher.getInstance("$algorithm/$mode/NoPadding")
     private var decryptCipher = javax.crypto.Cipher.getInstance("$algorithm/$mode/NoPadding")

@@ -1,6 +1,8 @@
 package com.github.andreypfau.kotlinio.crypto.digest
 
 import com.github.andreypfau.kotlinio.pool.DirectAllocationCloseablePool
+import com.github.andreypfau.kotlinio.pool.ObjectPool
+import com.github.andreypfau.kotlinio.pool.useInstance
 import gcrypt.*
 import kotlinx.cinterop.*
 import platform.posix.memcpy
@@ -39,25 +41,45 @@ abstract class GcryptDigest(
 }
 
 actual class Sha1 : GcryptDigest(GCRY_MD_SHA1.convert()), Digest {
-    companion object {
-        val POOL = DirectAllocationCloseablePool { Sha1() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha1> = DirectAllocationCloseablePool { Sha1() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Sha256 : GcryptDigest(GCRY_MD_SHA256.convert()), Digest {
-    companion object {
-        val POOL = DirectAllocationCloseablePool { Sha256() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha256> = DirectAllocationCloseablePool { Sha256() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Sha512 : GcryptDigest(GCRY_MD_SHA512.convert()), Digest {
-    companion object {
-        val POOL = DirectAllocationCloseablePool { Sha512() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha512> = DirectAllocationCloseablePool { Sha512() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Md5 : GcryptDigest(GCRY_MD_MD5.convert()), Digest {
-    companion object {
-        val POOL = DirectAllocationCloseablePool { Md5() }
+    actual companion object {
+        actual val POOL: ObjectPool<Md5> = DirectAllocationCloseablePool { Md5() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }

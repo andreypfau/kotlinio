@@ -1,7 +1,8 @@
 package com.github.andreypfau.kotlinio.crypto.digest
 
 import com.github.andreypfau.kotlinio.pool.DirectAllocationCloseablePool
-import com.github.andreypfau.kotlinio.pool.DirectAllocationPool
+import com.github.andreypfau.kotlinio.pool.ObjectPool
+import com.github.andreypfau.kotlinio.pool.useInstance
 import java.security.MessageDigest
 
 abstract class JvmDigest internal constructor(
@@ -24,25 +25,45 @@ abstract class JvmDigest internal constructor(
 }
 
 actual class Sha1 : JvmDigest(MessageDigest.getInstance("SHA-1")), Digest {
-    companion object {
-        val POOL: DirectAllocationPool<Sha1> = DirectAllocationCloseablePool { Sha1() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha1> = DirectAllocationCloseablePool { Sha1() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Sha256 : JvmDigest(MessageDigest.getInstance("SHA-256")), Digest {
-    companion object {
-        val POOL: DirectAllocationPool<Sha256> = DirectAllocationCloseablePool { Sha256() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha256> = DirectAllocationCloseablePool { Sha256() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Sha512 : JvmDigest(MessageDigest.getInstance("SHA-512")), Digest {
-    companion object {
-        val POOL: DirectAllocationPool<Sha512> = DirectAllocationCloseablePool { Sha512() }
+    actual companion object {
+        actual val POOL: ObjectPool<Sha512> = DirectAllocationCloseablePool { Sha512() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
 
 actual class Md5 : JvmDigest(MessageDigest.getInstance("MD5")), Digest {
-    companion object {
-        val POOL: DirectAllocationPool<Md5> = DirectAllocationCloseablePool { Md5() }
+    actual companion object {
+        actual val POOL: ObjectPool<Md5> = DirectAllocationCloseablePool { Md5() }
+
+        actual fun hash(byteArray: ByteArray): ByteArray = POOL.useInstance {
+            it.update(byteArray)
+            it.digest()
+        }
     }
 }
