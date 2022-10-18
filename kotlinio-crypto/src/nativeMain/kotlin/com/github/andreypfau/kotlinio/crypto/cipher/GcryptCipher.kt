@@ -25,12 +25,14 @@ abstract class GcryptCipher(
     }
 
     override fun setKey(buf: ByteArray, offset: Int, length: Int) {
+        if (length == 0) return
         buf.usePinned {
             gcry_cipher_setkey(handle, it.addressOf(offset), length.convert())
         }
     }
 
     override fun setIv(buf: ByteArray, offset: Int, length: Int) {
+        if (length == 0) return
         buf.usePinned {
             if (mode == CipherMode.CTR) {
                 gcry_cipher_setctr(handle, it.addressOf(offset), length.convert())
@@ -48,6 +50,7 @@ abstract class GcryptCipher(
         inputOffset: Int,
         inputLength: Int
     ) {
+        if (inputLength == 0) return
         output.usePinned { outputPin ->
             input.usePinned { inputPin ->
                 gcry_cipher_encrypt(
@@ -69,6 +72,7 @@ abstract class GcryptCipher(
         inputOffset: Int,
         inputLength: Int
     ) {
+        if (inputLength == 0) return
         output.usePinned { outputPin ->
             input.usePinned { inputPin ->
                 gcry_cipher_decrypt(

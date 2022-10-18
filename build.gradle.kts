@@ -33,7 +33,6 @@ allprojects {
         sourceSets {
             val commonMain by getting {
                 dependencies {
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 }
             }
             val commonTest by getting {
@@ -56,6 +55,9 @@ allprojects {
             if (isMacos) {
                 macosX64()
                 macosArm64()
+                iosArm64()
+                tvosArm64()
+                watchosArm64()
 
                 val darwinMain by creating {
                     dependsOn(nativeMain)
@@ -84,11 +86,15 @@ allprojects {
 
             if (isLinux || allTarget) {
                 linuxX64()
+                linuxArm64()
 
                 val linuxMain by creating {
                     dependsOn(nativeMain)
                 }
                 val linuxX64Main by getting {
+                    dependsOn(linuxMain)
+                }
+                val linuxArm64Main by getting {
                     dependsOn(linuxMain)
                 }
             }

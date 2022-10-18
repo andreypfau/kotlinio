@@ -17,6 +17,7 @@ abstract class GcryptDigest(
     }
 
     override fun update(byteArray: ByteArray, offset: Int, length: Int) {
+        if (length == 0) return
         byteArray.usePinned {
             gcry_md_write(handle, it.addressOf(offset), length.convert())
         }
@@ -27,6 +28,7 @@ abstract class GcryptDigest(
     )
 
     override fun digest(byteArray: ByteArray, offset: Int, length: Int): ByteArray {
+        if (length == 0) return byteArray
         byteArray.usePinned {
             val output = gcry_md_read(handle, algorithm)
             memcpy(it.addressOf(offset), output, length.convert())

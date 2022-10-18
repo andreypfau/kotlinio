@@ -1,0 +1,6 @@
+[versions]
+kotlin-version = "1.7.20"
+atomicfu-version = "0.18.4"
+
+[libraries]
+kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu-version" }

@@ -1,0 +1,6 @@
+kotlin {
+    js {
+        nodejs()
+        browser()
+    }
+}

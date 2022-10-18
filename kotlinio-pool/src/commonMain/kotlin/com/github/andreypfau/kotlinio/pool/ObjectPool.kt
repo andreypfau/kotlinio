@@ -15,6 +15,8 @@ interface ObjectPool<T : Any> : Closeable {
      * Recycle an instance. Should be recycled what was borrowed before otherwise could fail
      */
     fun recycle(instance: T)
+
+    override fun close()
 }
 
 /**
